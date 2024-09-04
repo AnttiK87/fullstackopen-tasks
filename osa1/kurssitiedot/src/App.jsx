@@ -54,7 +54,7 @@ const App1 = () => {
 //PART 1.2
 //Function for rendering parts of the content
 const Part = (props) => {
-  console.log(props)
+  console.log('Part gets these values', props)
   return (
     <p>
       {props.part} {props.exercises}
@@ -64,7 +64,7 @@ const Part = (props) => {
 
 // Content component for organizing and passing data to Part components
 const Content2 = (props) => {
-  console.log(props)
+  console.log('Content2 gets these values', props)
   return (
     <div>
       <Part part={props.part1} exercises={props.exercises1} />
@@ -76,13 +76,13 @@ const Content2 = (props) => {
 
 // App component for rendering the main structure of the application
 const App2 = () => {
-  const course = 'Half Stack application development';
-  const part1 = 'Fundamentals of React';
-  const exercises1 = 10;
-  const part2 = 'Using props to pass data';
-  const exercises2 = 7;
-  const part3 = 'State of a component';
-  const exercises3 = 14;
+  const course = 'Half Stack application development'
+  const part1 = 'Fundamentals of React'
+  const exercises1 = 10
+  const part2 = 'Using props to pass data'
+  const exercises2 = 7
+  const part3 = 'State of a component'
+  const exercises3 = 14
 
   return (
     <>
@@ -101,7 +101,7 @@ const App2 = () => {
 //PART 1.3
 // Content component for organizing and passing data to Part components
 const Content3 = ({part1, part2, part3}) => {
-  console.log(part1, part2, part3)
+  console.log('Content3 gets these values', part1, part2, part3)
   return (
     <div>
       <Part part={part1.name} exercises={part1.exercises} />
@@ -113,7 +113,7 @@ const Content3 = ({part1, part2, part3}) => {
 
 //Function for rendering total amount of exercises
 const Total3 = ({part1, part2, part3}) => {
-  console.log(part1, part2, part3)
+  console.log('Total3 gets these values', part1, part2, part3)
   return (
     <p>
       Number of exercises {part1.exercises + part2.exercises + part3.exercises}
@@ -150,6 +150,7 @@ const App3 = () => {
 //PART 1.4
 // Content component for organizing and passing data to Part components
 const Content4 = ({ parts }) => {
+  console.log('Content4 gets these values', parts)
   return (
     <div>
       <Part part={parts[0].name} exercises={parts[0].exercises}/>
@@ -161,7 +162,7 @@ const Content4 = ({ parts }) => {
 
 //Function for rendering total amount of exercises
 const Total4 = ({ parts }) => {
-  console.log(parts[0].exercises, parts[1].exercises, parts[2].exercises)
+  console.log('Total4 gets these values', parts[0].exercises, parts[1].exercises, parts[2].exercises)
   return (
     <p>
       Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}
@@ -200,7 +201,7 @@ const App4 = () => {
 //PART 1.5
 //Function for rendering header
 const Header5 = ({course}) => {
-  console.log(course)
+  console.log('Header5 gets these values', course)
   return (
     <h1>{course.name}</h1>
   )
@@ -208,6 +209,7 @@ const Header5 = ({course}) => {
 
 // Content component for organizing and passing data to Part components
 const Content5 = ({course}) => {
+  console.log('Content5 gets these values', course)
   return (
     <div>
       <Part part={course.parts[0].name} exercises={course.parts[0].exercises}/>
@@ -219,7 +221,7 @@ const Content5 = ({course}) => {
 
 //Function for rendering total amount of exercises
 const Total5 = ({course}) => {
-  console.log(course.parts[0].exercises, course.parts[1].exercises, course.parts[2].exercises)
+  console.log('Total5 gets these values', course.parts[0].exercises, course.parts[1].exercises, course.parts[2].exercises)
   return (
     <p>
       Number of exercises {course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises}
