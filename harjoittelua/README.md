@@ -1,0 +1,1 @@
+Harjoittelua kurssi materiaalin mukana.
