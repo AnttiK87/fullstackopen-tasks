@@ -56,7 +56,7 @@ const App = () => {
   //function which gives random integer between given min and max value
   const randomNumberInRange = (min, max) => {
      const randomNum = Math.floor(Math.random() * (max - min + 1)) + min
-     console.log('random number: ', randomNum)
+     //console.log('random number: ', randomNum)
      return randomNum
   }
 
@@ -70,7 +70,7 @@ const App = () => {
     const copy = [...points]
     copy[selected] += 1
     setPoints(copy)
-    console.log(copy)
+    //console.log(copy)
   }
 
   //for getting index for anecdote that has most votes
