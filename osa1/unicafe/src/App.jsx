@@ -15,9 +15,9 @@ const Button = ({ handleClick, text }) => (
 )
 
 //Function for rendering statistics
-const StatisticLine = ({ text, counter }) => <div>{text}: {counter}</div>
+const StatisticLine = ({ text, counter }) => <tr><td>{text}:</td><td>{counter}</td></tr>
 
-
+//Function for rendering either info text or organizing and passing data to Statistics component
 const Statistics = (props) => {
   if (props.total === 0) {
     return (
@@ -27,20 +27,22 @@ const Statistics = (props) => {
     )
   }
   return (
-    <div>
-      <StatisticLine text={props.textGood} counter={props.good}/>
-      <StatisticLine text={props.textNeutral} counter={props.neutral}/>
-      <StatisticLine text={props.textBad} counter={props.bad}/>
-      <StatisticLine text={"Total feedbacks"} counter={props.total}/>
-      <StatisticLine text={"Average of the feedbacks"} counter={props.avg}/>
-      <StatisticLine text={"Positive feedbacks"} counter={props.positive}/>
-    </div>
+    <table>
+      <tbody>
+        <StatisticLine text={props.textGood} counter={props.good}/>
+        <StatisticLine text={props.textNeutral} counter={props.neutral}/>
+        <StatisticLine text={props.textBad} counter={props.bad}/>
+        <StatisticLine text={"Total feedbacks"} counter={props.total}/>
+        <StatisticLine text={"Average"} counter={props.avg}/>
+        <StatisticLine text={"Positive feedbacks"} counter={props.positive}/>
+      </tbody>
+    </table>
   )
 }
 
-
-
+// Main application component for handling feedbacks and displaying statistics
 const App = () => {
+  //variables
   const title = 'Give feedback'
   const stats = 'Statistics'
   const goodText = 'Good'
@@ -53,8 +55,9 @@ const App = () => {
   const [average, setAvg] = useState(0)
   const [positive, setPositive] = useState(0)
 
+  //fuction for adding good feedback and calculatin other statisticks
   const addValueGood = () => {
-    console.log('increasing, value of good', good, 'and total', total)
+    //console.log('increasing, value of good', good, 'and total', total)
     const updatedGood = good + 1
     setGood(updatedGood)
     const updatedTotal = updatedGood + neutral + bad
@@ -63,8 +66,9 @@ const App = () => {
     setPositive(updatedGood/updatedTotal*100, ' %')
   }
   
+  //fuction for adding neutral feedback and calculatin other statisticks
   const addValueNeutral = () => {
-    console.log('increasing, value of neutral', neutral, 'and total', total)
+    //console.log('increasing, value of neutral', neutral, 'and total', total)
     const updatedNeutral = neutral + 1
     setNeutral(updatedNeutral)
     const updatedTotal = good + updatedNeutral + bad
@@ -73,8 +77,9 @@ const App = () => {
     setPositive(good/updatedTotal*100, ' %')
   }
 
+  //fuction for adding bad feedback and calculatin other statisticks
   const addValueBad = () => {
-    console.log('increasing, value of bad', bad, 'and total', total)
+    //console.log('increasing, value of bad', bad, 'and total', total)
     const updatedBad = bad + 1
     setBad(updatedBad)
     const updatedTotal = good + neutral + updatedBad
@@ -83,6 +88,7 @@ const App = () => {
     setPositive(good/updatedTotal*100, ' %') 
   }
 
+  // Returning UI components to display headers, feedback buttons and statistics
   return (
     <>
       <Header title={title} />
