@@ -1,1 +1,1 @@
-Part 1 and task kurssitiedot for fullstackopen course.
+Part 1 task Kurssitiedot for fullstackopen course.

@@ -1,1 +1,1 @@
-Part 1 and task Unicafe for fullstackopen course.
+Part 1 task Unicafe for fullstackopen course.
