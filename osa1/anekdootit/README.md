@@ -1,0 +1,1 @@
+Part 1 task Anekdootit for fullstackopen course.
