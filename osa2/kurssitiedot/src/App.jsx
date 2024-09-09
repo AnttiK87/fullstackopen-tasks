@@ -1,4 +1,4 @@
-//PART 2.1
+//PART 2, Task Kurssitiedot
 import Course from './components/Course'
 
 // App component for rendering the main structure of the application

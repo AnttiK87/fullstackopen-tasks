@@ -1,6 +1,7 @@
 //  For rendering the main structure of the application
 const Course = ({courses}) => {
-    var mainHeader= 'Web Development Curriculum' 
+    var mainHeader= 'Web Development Curriculum'
+    //console.log('MainHeader gets these values', courses)
     return (
     <>
         <MainHeader header={mainHeader} />
@@ -19,7 +20,7 @@ const Course = ({courses}) => {
 
 //Function for rendering main header
 const MainHeader = ({header}) => {
-    console.log('MainHeader gets these values', header)
+    //console.log('MainHeader gets these values', header)
     return (
         <h1>{header}</h1>
     )
@@ -27,7 +28,7 @@ const MainHeader = ({header}) => {
 
 //Function for rendering header
 const Header = (props) => {
-    console.log('Header gets these values', props)
+    //console.log('Header gets these values', props)
     return (
         <h2>{props.header}</h2>
     )
@@ -35,7 +36,7 @@ const Header = (props) => {
 
 // Content component for organizing and passing data to Part components
 const Content = ({course}) => {
-    console.log('Content gets these values', course)
+    //console.log('Content gets these values', course)
     return (
         <div>
             {course.parts.map(part => 
@@ -47,7 +48,7 @@ const Content = ({course}) => {
 
 //Function for rendering parts of the content
 const Part = (props) => {
-    console.log('Part gets these values', props)
+    //console.log('Part gets these values', props)
     return (
         <p><b>{props.part}</b>, amount of exercises: <b>{props.exercises}</b></p>
     )
@@ -55,7 +56,7 @@ const Part = (props) => {
 
 //Function for rendering total amount of exercises
 const Total = ({course}) => {
-    console.log('Total gets these values', course)
+    //console.log('Total gets these values', course)
     return (
         <b>
             Total amount is exercises is:{" "} 
