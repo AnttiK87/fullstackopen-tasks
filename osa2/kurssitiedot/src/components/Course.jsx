@@ -15,7 +15,7 @@ const Course = ({courses}) => {
             )}
         </>
     </>
-    )
+    ) 
 }
 
 //Function for rendering main header
