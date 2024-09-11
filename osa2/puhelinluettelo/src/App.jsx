@@ -1,17 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { Header, SearchPerson, Persons, NewPerson, ShowAlert } from './components/UiComponents'
 
 // App component for rendering the main structure of the application
-const App = (props) => {
+const App = () => {
   //variables
   const header1 = 'Phonebook'
   const header2 = 'Add a new'
   const header3 = 'Numbers'
-  const [persons, setPersons] = useState(props.persons) 
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('Add new name')
   const [newNumber, setNewNumber] = useState('Add new number')
   const [searchInput, setSearchInput] = useState('')
   const [showAll, setShowAll] = useState(true)
+
+  const hook = () => {
+    //console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        //console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }
+  
+  useEffect(hook, [])
 
 //function for adding person to array
   const addPerson = (event) => {
