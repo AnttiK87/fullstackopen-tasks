@@ -21,21 +21,24 @@ const SearchPerson = ({searchInput, handleSearchChange}) => {
 }
 
 //Function for rendering persons to the list
-const Persons = ({persons}) => {
+const Persons = ({persons, deletePerson }) => {
   //console.log('Persons gets these values', persons)
   return(
     <ul>
       {persons.map(person => 
-        <Person key={person.name} person={person} />
+        <Person key={person.id} person={person} deletePerson={deletePerson} />
       )}
     </ul>
   )
 }
 
 //Function for rendering one person to the list
-const Person = ({ person }) => {
+const Person = ({ person, deletePerson }) => {
   return (
-    <li>Name: {person.name}, Number: {person.number}</li>
+    <li>
+      Name: {person.name}, Number: {person.number}&nbsp;&nbsp;&nbsp;
+      <button onClick={() => deletePerson(person.id)}>{'Delete'}</button>
+    </li>
   )
 }
 
