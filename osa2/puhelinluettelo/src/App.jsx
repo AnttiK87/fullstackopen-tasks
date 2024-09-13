@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import phonebookService from './services/phonebook'
-import { Header, SearchPerson, Persons, NewPerson, ShowAlert } from './components/UiComponents'
+import { Header, SearchPerson, Persons, NewPerson } from './components/UiComponents'
+import Notification from './components/Notifications'
 
 // App component for rendering the main structure of the application
 const App = () => {
@@ -13,6 +14,10 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('Add new number')
   const [searchInput, setSearchInput] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [messageType, setMessageType] = useState("")
+  const messageAdded = `Added ${newName} to the phonebook!`
+  const messageUpdated = `Persons ${newName} phonenumber updated to the phonebook!`
 
   //function for getting persons from server
   useEffect(() => {
@@ -44,6 +49,7 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('Add new name')
         setNewNumber('Add new number')
+        showMessage(messageAdded, "success")
       })
     }
     else{
@@ -51,6 +57,7 @@ const App = () => {
       if (window.confirm(`${findDublicate.name} is already added to this phonebook, replace the old number (${findDublicate.number}) with a new one (${newNumber})?`)) {
         changeNumber(findDublicate.id)
         setNewNumber('Add new number')
+        showMessage(messageUpdated, "success")
       }
     }
   }
@@ -58,18 +65,19 @@ const App = () => {
   //function for deleting person from server/db.json file
   const deletePerson = id => {
     const person = persons.find(p => p.id === id)
+      const messageDeleted = `${person.name} deleted from the phonebook!`
+      const errorMessage = `${person.name} was already deleted from the phonebook!`
 
     if (window.confirm(`Delete ${person.name}?`)) {
       phonebookService
         .del(id)
         .then(() => {
-          setPersons(persons.filter(person => person.id !== id));
+          setPersons(persons.filter(person => person.id !== id))
+          showMessage(messageDeleted, "success")
         })
         .catch(error => {
           console.error("Failed to delete person", error)
-          alert(
-            `${person.name} was already deleted from server`
-          )
+          showMessage(errorMessage, "error")
           setPersons(persons.filter(person => person.id !== id))
         })
     }
@@ -105,6 +113,7 @@ const App = () => {
   const changeNumber = id => {
     const person = persons.find(person => person.id === id)
     const changedNumber = { ...person, number: newNumber}
+    const errorMessage = `Something went wrong while updatin persons ${person.name} phonenumber!`
 
     phonebookService
       .update(id, changedNumber)
@@ -113,16 +122,24 @@ const App = () => {
       })
       .catch(error => {
         console.error("Failed to edit number", error)
-        alert(
-          `'${person.name}' was already deleted from server`
-        )
+        showMessage(errorMessage, "error")
         setPersons(persons.filter(person => person.id !== id))
       })
+  }
+
+  //function for showing notifications to user
+  const showMessage = (message, messageType) => {
+    setNotificationMessage(message)
+    setMessageType(messageType)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 3000)
   }
 
   return (
     <div>
       <Header header={header1} />
+      <Notification message={notificationMessage} type={messageType} />
       <SearchPerson 
           searchInput={searchInput} 
           handleSearchChange={handleSearchChange} 

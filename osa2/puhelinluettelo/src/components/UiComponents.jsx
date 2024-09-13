@@ -64,11 +64,5 @@ const NewPerson = ({addPerson, newName, newNumber, handleNameChange, handleNumbe
     </form>
   )
 }
-
-//alert for that the inputted name is already added to phonebook
-const ShowAlert = (newName) => {
-  alert(`${newName} is already added to phonebook`)
-}
-
   
-export { Header, SearchPerson, Persons, NewPerson, ShowAlert }
+export { Header, SearchPerson, Persons, NewPerson }

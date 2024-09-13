@@ -1,0 +1,1 @@
+Part 2 task Maiden tiedot for fullstackopen course.
