@@ -10,16 +10,23 @@ const App = () => {
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [showResults, setShowResults] = useState(false)
-  const [tooManyResults, setTooManyResults] = useState(false)
   const [selectedWeather, setSelectedWeather] = useState(null)
+  const [loadingCountries, setLoadingCountries] = useState(true)
+  const [loadingWeather, setLoadingWeather] = useState(false);
 
 
-  //function for getting persons from server
+  //function for getting countries from server
   useEffect(() => {
+    setLoadingCountries(true)
     countryService
       .getAll()
       .then(allCountries => {
         setCountries(allCountries)
+        setLoadingCountries(false)
+      })
+      .catch(error => {
+        console.error('Error fetching countries:', error)
+        setLoadingCountries(false)
       })
   }, [])
 
@@ -32,103 +39,88 @@ const App = () => {
 
   // Function for handling search input and setting the filtered results
   function handleSearchChange(event) {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     setSearchInput(event.target.value)
     setShowResults(true)
     setSelectedCountry(null)
   }
 
+  // Function for fetching and displaying detailed information of the selected country
   const showOne = (select) => {
-    let selectedCountry;
-
-    // Jos select-parametri ei ole null, käytetään sitä, muuten filteröidään hakutuloksen perusteella
-    if (select) {
-        selectedCountry = select;
-    } else {
-        selectedCountry = countries.filter(country =>
-            country.name.common.toLowerCase().startsWith(searchInput.toLowerCase())
-        )[0]; // Otetaan ensimmäinen alkio taulukosta
-    }
+    const selectedCountry= select
 
     if (selectedCountry) {
-        console.log('Selected country is:', selectedCountry.name.common);
-        console.log('Lat and long:', selectedCountry.latlng[0], selectedCountry.latlng[1]);
+        //console.log('Selected country is:', selectedCountry.name.common)
+        //console.log('Lat and long:', selectedCountry.capitalInfo.latlng[0], selectedCountry.capitalInfo.latlng[1])
 
-        // Kutsu weather-funktiota ennen countryService-kutsua
-        weather(selectedCountry.latlng[0], selectedCountry.latlng[1]);
-        console.log('weather:', selectedWeather);
+        weather(selectedCountry.capitalInfo.latlng[0], selectedCountry.capitalInfo.latlng[1])
+        //console.log('weather values at App.jsx:', selectedWeather)
 
-        // Hae tarkemmat tiedot valitusta maasta
         countryService
             .getOne(selectedCountry.name.common)
             .then(selectedOne => {
-                setSelectedCountry(selectedOne);  // Päivitetään 'selectedCountry' yhdellä maalla
-                console.log('Selected country details:', selectedOne);
+                setSelectedCountry(selectedOne)
+                //console.log('Selected country details at App.jsx:', selectedOne)
             })
             .catch(error => {
-                console.error('Error fetching country details:', error);
-            });
+                console.error('Error fetching country details:', error)
+            })
     } else {
-        console.log('No country found matching the search input');
+        console.log('No country found matching the search input')
     }
-};
+  }
 
-  
+  //useEffect for determining if one country is selected or no results are found
   useEffect(() => {
-    if (itemsToShow.length > 10) {
-      setTooManyResults(true);
-    } else if (itemsToShow.length === 1 && selectedCountry === null) {
-      showOne(null); // Kutsu showOne-funktiota, kun tulosten määrä on 1
+    if (itemsToShow.length === 1 && selectedCountry === null) {
+      showOne(itemsToShow[0])
     } else if (itemsToShow.length === 0) {
       setSelectedCountry(null)
-      setTooManyResults(true);
-    }else {
-      setTooManyResults(false);
     }
-  }, [itemsToShow]);  // Tarkkaile 'itemsToShow'-tilaa
+  }, [itemsToShow])
 
+  // Function for fetching and displaying the weather data of the selected country's capital
   const weather = (lat, long) => {
-    const api_key = import.meta.env.VITE_SOME_KEY;
-
+    const api_key = import.meta.env.VITE_SOME_KEY
+    setLoadingWeather(true)
+  
     countryService
       .getWeather(lat, long, api_key)
-          .then(selectedWeather => {
-              setSelectedWeather(selectedWeather);
-              console.log('Weather data:', selectedWeather);
-          })
-          .catch(error => {
-              console.error('Error fetching weather:', error);
-          });
-  };
+      .then(selectedWeather => {
+        setSelectedWeather(selectedWeather)
+        setLoadingWeather(false)
+      })
+      .catch(error => {
+        console.error('Error fetching weather:', error)
+        setLoadingWeather(false)
+      })
+  }
 
   return (
-    <div>
+    <>
       <Header header={header1} />
       <SearchCountry 
         searchInput={searchInput} 
         handleSearchChange={handleSearchChange} 
       />
-  
-      <div>
-        {/* Ensimmäinen osio - Listataan maat */}
-        {selectedCountry === null ? (
-          <div>
-          {tooManyResults && itemsToShow.length === 0 ? (
+      {loadingCountries ? (
+        <p>Loading...</p>
+      ) : selectedCountry === null ? (
+        <div>
+          {itemsToShow.length === 0 ? (
             <p>No results found</p>
-          ) : tooManyResults ? (
+          ) : itemsToShow.length > 10 ? (
             <p>Too many results, please refine your search</p>
           ) : (
             <Countries countries={itemsToShow} showDetails={showOne}/>
           )}
         </div>
-        ) : (
-          /* Toinen osio - Näytetään yksityiskohdat, jos vain yksi maa */
-          <div>
-            <CountryDetails country={selectedCountry} weather={selectedWeather} />
-          </div>
-        )}
-      </div>
-    </div>
+      ) : (
+        <div>
+          <CountryDetails country={selectedCountry} weather={selectedWeather} loadingWeather={loadingWeather} />
+        </div>
+      )}
+    </>
   )
 }
 
